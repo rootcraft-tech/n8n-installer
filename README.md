@@ -14,12 +14,12 @@ Automated installer scripts for n8n workflow automation platform on Ubuntu 22.04
 
 ### Production Installation (with SSL)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/install-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
 ```
 
 ### Development Installation (HTTP only)
 ```bash 
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/simple-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
 ```
 
 ## 📋 What's Included
@@ -45,7 +45,7 @@ curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/si
 ### Step 1: Check Requirements
 ```bash
 # Download and run system check
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/check-requirements.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
 ```
 
 **Requirements:**
@@ -64,7 +64,7 @@ dig +short yourdomain.com
 ### Step 3: Run Installation
 ```bash
 # Download installer
-wget https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/install-n8n.sh
+wget https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh
 
 # Make executable
 chmod +x install-n8n.sh
