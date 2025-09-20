@@ -45,7 +45,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/
 ### Шаг 1: Проверка требований
 ```bash
 # Скачать и запустить проверку системы
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/check-requirements.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
 ```
 
 **Требования:**
