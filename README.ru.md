@@ -18,8 +18,8 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/
 ```
 
 ### Установка для разработки (только HTTP)
-```bash 
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/simple-install.sh | sudo bash
+```bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
 ```
 
 ## 📋 Что включено
