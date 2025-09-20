@@ -10,7 +10,7 @@ Automated installer scripts for n8n workflow automation platform on Ubuntu 22.04
 
 ## 🚀 Quick Install
 
-⚡ **Recommended:** Tested and optimized for [[MyHost.pro](https://myhosti.pro/] VPS servers (MVK tariff plans)
+⚡ **Recommended:** Tested and optimized for [[MyHost.pro] (https://myhosti.pro] VPS servers (MVK tariff plans)
 
 ### Production Installation (with SSL)
 ```bash
