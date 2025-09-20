@@ -14,7 +14,7 @@
 
 ### Продакшн установка (с SSL)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/install-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
 ```
 
 ### Установка для разработки (только HTTP)
