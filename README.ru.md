@@ -64,7 +64,7 @@ dig +short yourdomain.com
 ### Шаг 3: Запуск установки
 ```bash
 # Скачать установщик
-wget https://raw.githubusercontent.com/YOUR_USERNAME/n8n-installer/main/install-n8n.sh
+wget https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh
 
 # Сделать исполняемым
 chmod +x install-n8n.sh
