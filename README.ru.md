@@ -21,6 +21,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/
 ```bash
 curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
 ```
+**В процессе установки скрипт попросит ввести ваш домен.**
 
 ### Установка для разработки (только HTTP)
 ```bash
