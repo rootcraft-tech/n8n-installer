@@ -46,7 +46,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/u
 
 | Script | Version | Purpose | Status |
 |--------|---------|------------|---------|
-| `install-n8n.sh` | v2.3.1 | 🔒 Full HTTPS setup with nginx proxy | ✅ Tested |
+| `install-n8n.sh` | v2.4 | 🔒 Full HTTPS setup with nginx proxy | ✅ Tested |
 | `simple-install.sh` | v1.0 | ⚡ Quick HTTP installation | ✅ Tested |
 | `uninstall-n8n.sh` | v2.2 | 🗑️ Complete removal with --auto mode | ✅ Tested |
 | `check-requirements.sh` | v1.0 | 🔍 System requirements check | ✅ Tested |
