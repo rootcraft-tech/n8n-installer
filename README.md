@@ -17,9 +17,9 @@ Automated installation scripts for n8n workflow automation platform on Ubuntu 22
 curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/check-requirements.sh | bash
 ```
 
-### Production Installation (with SSL) - script will prompt for domain and email
+### Production Installation (with SSL)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
+sudo -E DOMAIN="yourdomain.com" EMAIL="your@email.com" bash -c 'curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | bash'
 ```
 
 ### Development Installation (HTTP only)
@@ -98,7 +98,7 @@ dig +short yourdomain.com
 
 ### Production installation (with SSL) - script will prompt for domain and email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
+sudo -E DOMAIN="yourdomain.com" EMAIL="your@email.com" bash -c 'curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | bash'
 ```
 
 ### Development installation (HTTP only)
