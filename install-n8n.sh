@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# n8n Ubuntu Installer v2.3.1
+# n8n Ubuntu Installer v2.4
 # Automated HTTPS installation script for n8n on Ubuntu 22.04 LTS
+# FIXED: npm permission issue resolved
 # Author: AI-Generated Script
 # License: MIT
 
@@ -120,9 +121,13 @@ if ! id -u n8n > /dev/null 2>&1; then
     useradd --system --create-home --shell /bin/bash n8n
 fi
 
-# Install n8n globally
-log "Installing n8n..."
-sudo -u n8n npm install -g n8n@latest
+# FIX: Install n8n globally as root (fixes EACCES permission error)
+log "Installing n8n globally..."
+npm install -g n8n@latest
+
+# Verify n8n installation
+N8N_VERSION=$(n8n --version 2>/dev/null || echo "Installation check...")
+info "n8n version: $N8N_VERSION"
 
 # Create systemd service
 log "Creating systemd service..."
@@ -240,11 +245,11 @@ fi
 log "Checking final status..."
 if systemctl is-active --quiet n8n && systemctl is-active --quiet nginx; then
     log "✅ Installation completed successfully!"
-    log "✅ n8n is running and accessible at: https://$DOMAIN"
-    log "✅ Services status:"
+    log "🌐 n8n is running and accessible at: https://$DOMAIN"
+    log "📊 Services status:"
     echo "   - n8n: $(systemctl is-active n8n)"
     echo "   - nginx: $(systemctl is-active nginx)"
-    log "✅ You can now open https://$DOMAIN in your browser to set up n8n"
+    log "🚀 You can now open https://$DOMAIN in your browser to set up n8n"
 else
     error "Some services are not running properly. Please check the logs."
 fi
