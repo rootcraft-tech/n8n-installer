@@ -30,7 +30,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/s
 ### Полное удаление n8n
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/uninstall-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/uninstall-n8n.sh | sudo bash -s -- --auto
 ```
 ## 🌐 Точки доступа
 
