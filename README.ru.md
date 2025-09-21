@@ -96,7 +96,7 @@ dig +short yourdomain.com
 ```
 ### Шаг 3: Установка
 
-### Продакшн установка (с SSL)
+### Продакшн установка (с SSL) - скрипт запросит домен и email
 ```bash
 curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
 ```
