@@ -14,23 +14,23 @@ Automated installation scripts for n8n workflow automation platform on Ubuntu 22
 
 ### System Requirements Check
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/check-requirements.sh | bash
 ```
 
 ### Production Installation (with SSL) - script will prompt for domain and email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
 ```
 
 ### Development Installation (HTTP only)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/simple-install.sh | sudo bash
 ```
 
 ### Complete n8n Uninstallation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/uninstall-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/uninstall-n8n.sh | sudo bash
 ```
 ## 🌐 Access Points
 
@@ -65,7 +65,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/
 ### Step 1: Requirements Check
 ```bash
 # Download and run system check
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/check-requirements.sh | bash
 ```
 
 **Requirements:**
@@ -98,12 +98,12 @@ dig +short yourdomain.com
 
 ### Production installation (with SSL) - script will prompt for domain and email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
 ```
 
 ### Development installation (HTTP only)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/simple-install.sh | sudo bash
 ```
 
 ## 🛠️ What Gets Installed
