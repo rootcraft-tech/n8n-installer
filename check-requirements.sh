@@ -197,7 +197,7 @@ check_info "Run 'sudo bash simple-install.sh' for HTTP installation"
 
 echo
 echo "📚 Documentation:"
-echo "• Installation Guide: https://github.com/YOUR_USERNAME/n8n-installer"
-echo "• Troubleshooting: https://github.com/YOUR_USERNAME/n8n-installer/blob/main/docs/troubleshooting.md"
+echo "• Installation Guide: https://github.com/rootcraft-tech/n8n-installer"
+echo "• Troubleshooting: https://github.com/rootcraft-tech/n8n-installer/blob/main/docs/troubleshooting.md"
 
 echo -e "${NC}"
