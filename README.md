@@ -10,208 +10,123 @@ Automated installer scripts for n8n workflow automation platform on Ubuntu 22.04
 
 ## 🚀 Quick Install
 
-⚡ **Recommended:** Tested and optimized for [MyHosti.pro](https://myhosti.pro/en/services/vds) VPS servers (MVK tariff plans)
+⚡ **Recommended:** Tested and optimized for [MyHosti.pro](https://myhosti.pro/services/vds) VPS servers (MVK plans)
 
-### Production Installation (with SSL)
+### System Requirements Check
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
-```
-
-### Development Installation (HTTP only)
-```bash 
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
-```
-
-## 📋 What's Included
-
-| Script | Version | Purpose | Status |
-|--------|---------|---------|---------|
-| `install-n8n.sh` | v2.3.1 | 🔒 Full HTTPS setup with nginx proxy | ✅ Tested |
-| `simple-install.sh` | v1.0 | ⚡ Quick HTTP installation | ✅ Tested |
-| `uninstall-n8n.sh` | v2.2 | 🗑️ Complete removal with --auto mode | ✅ Tested |
-| `check-requirements.sh` | v1.0 | 🔍 System requirements validation | ✅ Tested |
-
-## ✨ Features
-
-- **🔒 HTTPS Ready** - Automatic SSL certificates via Let's Encrypt
-- **⚡ One-Click Install** - Full automation with zero configuration
-- **🛡️ Security First** - nginx proxy with security headers
-- **🔧 Easy Management** - systemd service with auto-start
-- **🗑️ Clean Removal** - Complete uninstallation option
-- **✅ Pre-validated** - System requirements checking
-
-## 📖 Installation Guide
-
-### Step 1: Check Requirements
-```bash
-# Download and run system check
 curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
-```
+Production Installation (with SSL) - script will ask for domain and email
+Copycurl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
+Development Installation (HTTP only)
+Copycurl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+Complete n8n Removal
+Copycurl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/uninstall-n8n.sh | sudo bash
+🌐 Access Points
+After HTTPS installation (install-n8n.sh):
 
-**Requirements:**
-- Ubuntu 22.04 LTS
-- Minimum 1GB RAM
-- sudo privileges 
-- Domain with DNS pointing to your server (for HTTPS)
+🌍 Public access: https://yourdomain.com (port 443)
+🔒 Internal service: localhost:5678 (server access only)
+After HTTP installation (simple-install.sh):
 
-### Step 2: DNS Configuration
-Point your domain to your server IP:
-```bash
-# Verify DNS propagation
+🌍 Direct access: http://server-ip:5678
+📝 Example: http://n8n.tech:5678
+📋 What's Included
+Script	Version	Purpose	Status
+install-n8n.sh	v2.3.1	🔒 Full HTTPS setup with nginx proxy	✅ Tested
+simple-install.sh	v1.0	⚡ Quick HTTP installation	✅ Tested
+uninstall-n8n.sh	v2.2	🗑️ Complete removal with --auto mode	✅ Tested
+check-requirements.sh	v1.0	🔍 System requirements check	✅ Tested
+✨ Features
+🔒 HTTPS Ready - Automatic SSL certificates via Let's Encrypt
+⚡ One-Click Install - Full automation without configuration
+🛡️ Security First - nginx proxy with security headers
+🔧 Easy Management - systemd service with auto-start
+🗑️ Clean Removal - Complete uninstallation option
+✅ Pre-flight Check - System requirements validation
+📖 Installation Guide
+Step 1: Requirements Check
+Copy# Download and run system check
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
+Requirements:
+
+OS: Ubuntu 22.04 LTS
+RAM: Minimum 1 GB, recommended 2+ GB
+CPU: Any modern processor (2+ cores recommended)
+Disk: Minimum 4 GB SSD, recommended 40+ GB
+Permissions: sudo privileges
+Domain: DNS pointing to your server (HTTPS only)
+Step 2: DNS Configuration
+Configure DNS records with your domain registrar or DNS provider:
+
+Add A records:
+
+yourdomain.com → YOUR_SERVER_IP
+www.yourdomain.com → YOUR_SERVER_IP (optional)
+Where to configure:
+
+At your domain registrar (where you bought the domain)
+Or at your DNS provider (if using external DNS)
+DNS propagation check:
+
+Copy# Check that domain points to your server
 dig +short yourdomain.com
-```
 
-### Step 3: Run Installation
-```bash
-# Download installer
-wget https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh
+# Should return your server IP
+Step 3: Installation
+Production Installation (with SSL) - script will ask for domain and email
+Copycurl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
+Development Installation (HTTP only)
+Copycurl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+🛠️ What Gets Installed
+Node.js 20 - Latest LTS version via NodeSource
+n8n - Latest stable release via npm
+nginx - Web server and reverse proxy
+certbot - SSL certificate management
+systemd service - Process management and auto-start
+🛡️ Security Features
+SSL/TLS encryption with automatic renewal
+Security headers (HSTS, X-Frame-Options, etc.)
+Firewall configuration (ufw rules)
+Service isolation (dedicated user account)
+File permission hardening
+🚨 Troubleshooting
+Common Issues
+DNS Problems:
 
-# Make executable
-chmod +x install-n8n.sh
-
-# Run installation
-sudo ./install-n8n.sh
-```
-
-The installer will:
-1. 📦 Install Node.js 20 LTS
-2. 🚀 Install latest n8n version
-3. 🌐 Configure nginx reverse proxy
-4. 🔒 Obtain SSL certificate
-5. ⚙️ Setup systemd service
-6. 🎯 Configure firewall rules
-
-## 🔧 Advanced Usage
-
-### Manual Installation Steps
-```bash
-# 1. Check system requirements
-bash check-requirements.sh
-
-# 2. Install with custom domain
-sudo ./install-n8n.sh --domain yourdomain.com --email your@email.com
-
-# 3. Access your n8n instance
-# https://yourdomain.com
-```
-
-### Uninstallation
-```bash
-# Interactive removal
-sudo bash uninstall-n8n.sh
-
-# Silent removal
-sudo bash uninstall-n8n.sh --auto
-```
-
-## 🛠️ What Gets Installed
-
-- **Node.js 20** - Latest LTS version via NodeSource
-- **n8n** - Latest stable release via npm
-- **nginx** - Web server and reverse proxy
-- **certbot** - SSL certificate management
-- **systemd service** - Process management and auto-start
-
-## 🌐 Access Points
-
-- **HTTPS Access:** `https://yourdomain.com` (Port 443)
-- **HTTP Access:** `http://server-ip:5678` (simple-install only)
-- **Internal Service:** `localhost:5678` (behind nginx proxy)
-
-## 🛡️ Security Features
-
-- **SSL/TLS encryption** with automatic renewal
-- **Security headers** (HSTS, X-Frame-Options, etc.)
-- **Firewall configuration** (ufw rules)
-- **Service isolation** (dedicated user account)
-- **File permissions** hardening
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-**DNS Problems:**
-```bash
-# Check DNS resolution
+Copy# Check DNS resolution
 dig +short yourdomain.com
 nslookup yourdomain.com
 
 # Restart nginx
 sudo systemctl restart nginx
-```
+SSL Certificate Issues:
 
-**SSL Certificate Issues:**
-```bash
-# Manual certificate renewal
+Copy# Manual certificate renewal
 sudo certbot renew --dry-run
 sudo certbot certificates
 
-# Check nginx config
+# Check nginx configuration
 sudo nginx -t
-```
+Service Issues:
 
-**Service Problems:**
-```bash
-# Check n8n service status
+Copy# Check n8n service status
 sudo systemctl status n8n
 sudo journalctl -u n8n -f
 
 # Restart services
 sudo systemctl restart n8n nginx
-```
+Log Locations
+n8n logs: sudo journalctl -u n8n -f
+nginx logs: /var/log/nginx/
+certbot logs: /var/log/letsencrypt/
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Log Locations
-- **n8n logs:** `sudo journalctl -u n8n -f`
-- **nginx logs:** `/var/log/nginx/`
-- **certbot logs:** `/var/log/letsencrypt/`
-
-## 📁 Project Structure
-
-```
-n8n-installer/
-├── README.md                 # This file
-├── README.ru.md             # Russian documentation
-├── LICENSE                  # MIT License
-├── install-n8n.sh          # Main HTTPS installer
-├── simple-install.sh       # HTTP-only installer
-├── uninstall-n8n.sh       # Complete removal script
-├── check-requirements.sh   # System validation
-├── docs/
-│   ├── installation.md     # Detailed installation guide
-│   ├── security.md        # Security best practices
-│   └── troubleshooting.md # Common issues and solutions
-└── examples/
-    ├── nginx.conf         # Sample nginx configuration
-    └── n8n.service       # Sample systemd service
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## ⭐ Support
-
+⭐ Support
 If this project helped you, please give it a ⭐ on GitHub!
 
-## 🔗 Links
-
-- [n8n Official Documentation](https://docs.n8n.io/)
-- [Ubuntu 22.04 LTS](https://ubuntu.com/download/server)
-- [Let's Encrypt](https://letsencrypt.org/)
-- [MyHost.pro VPS](https://myhost.pro) - Recommended hosting
-
----
-
-**✅ Tested on Ubuntu 22.04 LTS**  
-**🚀 Production Ready**  
-**🔒 Security Focused**
+🔗 Links
+Official n8n Documentation
+Ubuntu 22.04 LTS
+Let's Encrypt
+MyHost.pro - Recommended hosting
