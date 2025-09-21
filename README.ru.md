@@ -12,6 +12,11 @@
 
 ⚡ **Рекомендуется:** Протестировано и оптимизировано для VPS серверов [MyHosti.pro](https://myhosti.pro/services/vds) (тарифы MVK)
 
+### Проверка системных требований
+```bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
+```
+
 ### Продакшн установка (с SSL)
 ```bash
 curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
@@ -20,6 +25,12 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/
 ### Установка для разработки (только HTTP)
 ```bash
 curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+```
+
+### Полное удаление n8n
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/uninstall-n8n.sh | sudo bash
 ```
 
 ## 📋 Что включено
