@@ -14,23 +14,23 @@
 
 ### Проверка системных требований
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/check-requirements.sh | bash
 ```
 
 ### Продакшн установка (с SSL) - скрипт запросит домен и email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
 ```
 
 ### Установка для разработки (только HTTP)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/simple-install.sh | sudo bash
 ```
 
 ### Полное удаление n8n
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/uninstall-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/uninstall-n8n.sh | sudo bash
 ```
 ## 🌐 Точки доступа
 
@@ -65,7 +65,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/
 ### Шаг 1: Проверка требований
 ```bash
 # Скачать и запустить проверку системы
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/check-requirements.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/check-requirements.sh | bash
 ```
 
 **Требования:**
@@ -98,12 +98,12 @@ dig +short yourdomain.com
 
 ### Продакшн установка (с SSL) - скрипт запросит домен и email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/install-n8n.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
 ```
 
 ### Установка для разработки (только HTTP)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer1/main/simple-install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/simple-install.sh | sudo bash
 ```
 
 ## 🛠️ Что устанавливается
