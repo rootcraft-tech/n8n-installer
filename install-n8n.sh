@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# n8n Ubuntu Installer v2.4
-# Automated HTTPS installation script for n8n on Ubuntu 22.04 LTS
-# FIXED: npm permission issue resolved
+# n8n Ubuntu Installer v2.5
+# ONE-LINER READY: supports curl | bash with environment variables
+# Usage: DOMAIN="yourdomain.com" EMAIL="your@email.com" curl -fsSL ... | sudo -E bash
 # Author: AI-Generated Script
 # License: MIT
 
@@ -13,25 +13,12 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Logging function
-log() {
-    echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')] $1${NC}"
-}
-
-warn() {
-    echo -e "${YELLOW}[WARNING] $1${NC}"
-}
-
-error() {
-    echo -e "${RED}[ERROR] $1${NC}"
-    exit 1
-}
-
-info() {
-    echo -e "${BLUE}[INFO] $1${NC}"
-}
+log() { echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')] $1${NC}"; }
+warn() { echo -e "${YELLOW}[WARNING] $1${NC}"; }
+error() { echo -e "${RED}[ERROR] $1${NC}"; exit 1; }
+info() { echo -e "${BLUE}[INFO] $1${NC}"; }
 
 # Check if running as root
 if [[ $EUID -ne 0 ]]; then
@@ -43,10 +30,35 @@ if ! grep -q "Ubuntu 22.04" /etc/os-release; then
     warn "This script is designed for Ubuntu 22.04 LTS. Continuing anyway..."
 fi
 
-log "Starting n8n installation with HTTPS support..."
+# Detect if running in pipe mode (curl | bash)
+if [[ ! -t 0 ]]; then
+    PIPE_MODE=true
+    info "Detected pipe mode (curl | bash)"
+else
+    PIPE_MODE=false
+fi
 
 # Function to get domain and email
 get_domain_info() {
+    # Check environment variables first
+    if [[ -n "$DOMAIN" && -n "$EMAIL" ]]; then
+        log "Using environment variables: DOMAIN=$DOMAIN, EMAIL=$EMAIL"
+        return 0
+    fi
+
+    # If in pipe mode and no env vars, show instructions
+    if [[ "$PIPE_MODE" == "true" ]]; then
+        error "For one-liner installation, provide environment variables:
+
+DOMAIN=\"yourdomain.com\" EMAIL=\"your@email.com\" curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo -E bash
+
+Or download and run interactively:
+wget https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh
+chmod +x install-n8n.sh
+sudo ./install-n8n.sh"
+    fi
+
+    # Interactive mode
     if [[ -z "$DOMAIN" ]]; then
         read -p "Enter your domain name (e.g., yourdomain.com): " DOMAIN
         if [[ -z "$DOMAIN" ]]; then
@@ -65,34 +77,31 @@ get_domain_info() {
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --domain)
-            DOMAIN="$2"
-            shift 2
-            ;;
-        --email)
-            EMAIL="$2"
-            shift 2
-            ;;
-        *)
-            error "Unknown option: $1"
-            ;;
+        --domain) DOMAIN="$2"; shift 2 ;;
+        --email) EMAIL="$2"; shift 2 ;;
+        *) error "Unknown option: $1" ;;
     esac
 done
 
-# Get domain and email if not provided
+# Get domain and email
 get_domain_info
 
+log "Starting n8n installation with HTTPS support..."
 log "Domain: $DOMAIN"
 log "Email: $EMAIL"
 
-# Verify DNS before continuing
+# Verify DNS (non-blocking in pipe mode)
 info "Verifying DNS resolution for $DOMAIN..."
 if ! nslookup $DOMAIN > /dev/null 2>&1; then
-    warn "DNS resolution failed for $DOMAIN. Make sure your domain points to this server."
-    read -p "Continue anyway? (y/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        exit 1
+    if [[ "$PIPE_MODE" == "true" ]]; then
+        warn "DNS resolution failed for $DOMAIN. Continuing anyway in pipe mode..."
+    else
+        warn "DNS resolution failed for $DOMAIN. Make sure your domain points to this server."
+        read -p "Continue anyway? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            exit 1
+        fi
     fi
 fi
 
@@ -104,14 +113,13 @@ apt update && apt upgrade -y
 log "Installing required packages..."
 apt install -y curl wget gnupg2 software-properties-common apt-transport-https ca-certificates lsb-release nginx ufw
 
-# Install Node.js 20 (required for n8n 1.97+)
+# Install Node.js 20
 log "Installing Node.js 20 LTS..."
 curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
 apt update
 apt install -y nodejs
 
-# Verify Node.js installation
 NODE_VERSION=$(node --version)
 log "Node.js installed: $NODE_VERSION"
 
@@ -121,13 +129,57 @@ if ! id -u n8n > /dev/null 2>&1; then
     useradd --system --create-home --shell /bin/bash n8n
 fi
 
-# FIX: Install n8n globally as root (fixes EACCES permission error)
+# Install n8n globally (FIXED: as root to avoid EACCES)
 log "Installing n8n globally..."
 npm install -g n8n@latest
 
-# Verify n8n installation
 N8N_VERSION=$(n8n --version 2>/dev/null || echo "Installation check...")
 info "n8n version: $N8N_VERSION"
+
+# STEP 1: Create HTTP-only nginx configuration first
+log "Creating initial HTTP nginx configuration..."
+cat > /etc/nginx/sites-available/n8n << EOF
+server {
+    listen 80;
+    server_name $DOMAIN;
+
+    location / {
+        proxy_pass http://localhost:5678;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_cache_bypass \$http_upgrade;
+
+        proxy_connect_timeout 60s;
+        proxy_send_timeout 60s;
+        proxy_read_timeout 60s;
+    }
+}
+EOF
+
+# Enable nginx site
+ln -sf /etc/nginx/sites-available/n8n /etc/nginx/sites-enabled/
+rm -f /etc/nginx/sites-enabled/default
+
+# Test nginx configuration
+nginx -t || error "nginx configuration test failed"
+
+# Install certbot
+log "Installing certbot..."
+apt install -y certbot python3-certbot-nginx
+
+# Configure firewall
+log "Configuring firewall..."
+ufw --force reset
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow ssh
+ufw allow 'Nginx Full'
+ufw --force enable
 
 # Create systemd service
 log "Creating systemd service..."
@@ -155,71 +207,13 @@ Environment=N8N_HOST=localhost
 WantedBy=multi-user.target
 EOF
 
-# Configure nginx
-log "Configuring nginx..."
-cat > /etc/nginx/sites-available/n8n << EOF
-server {
-    listen 80;
-    server_name $DOMAIN;
-    return 301 https://\$server_name\$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    server_name $DOMAIN;
-
-    # SSL configuration will be added by certbot
-
-    # Security headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    add_header Referrer-Policy "no-referrer-when-downgrade" always;
-
-    location / {
-        proxy_pass http://localhost:5678;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_cache_bypass \$http_upgrade;
-
-        proxy_connect_timeout 60s;
-        proxy_send_timeout 60s;
-        proxy_read_timeout 60s;
-    }
-}
-EOF
-
-# Enable nginx site
-ln -sf /etc/nginx/sites-available/n8n /etc/nginx/sites-enabled/
-rm -f /etc/nginx/sites-enabled/default
-
-# Test nginx configuration
-nginx -t || error "nginx configuration test failed"
-
-# Install certbot for Let's Encrypt
-log "Installing certbot..."
-apt install -y certbot python3-certbot-nginx
-
-# Configure firewall
-log "Configuring firewall..."
-ufw --force reset
-ufw default deny incoming
-ufw default allow outgoing
-ufw allow ssh
-ufw allow 'Nginx Full'
-ufw --force enable
-
-# Start and enable services
+# Start services
 log "Starting services..."
 systemctl daemon-reload
 systemctl enable n8n
+systemctl enable nginx
 systemctl start n8n
+systemctl start nginx
 
 # Wait for n8n to start
 log "Waiting for n8n to start..."
@@ -230,28 +224,22 @@ if ! systemctl is-active --quiet n8n; then
     error "n8n service failed to start. Check logs with: journalctl -u n8n"
 fi
 
-systemctl enable nginx
-systemctl restart nginx
-
-# Obtain SSL certificate
+# STEP 2: Get SSL certificate and update nginx config
 log "Obtaining SSL certificate..."
-if ! certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email $EMAIL --redirect; then
-    warn "SSL certificate installation failed. You can try manually with: certbot --nginx -d $DOMAIN"
-else
+if certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email $EMAIL --redirect; then
     log "SSL certificate obtained successfully!"
-fi
-
-# Final status check
-log "Checking final status..."
-if systemctl is-active --quiet n8n && systemctl is-active --quiet nginx; then
     log "✅ Installation completed successfully!"
     log "🌐 n8n is running and accessible at: https://$DOMAIN"
-    log "📊 Services status:"
-    echo "   - n8n: $(systemctl is-active n8n)"
-    echo "   - nginx: $(systemctl is-active nginx)"
-    log "🚀 You can now open https://$DOMAIN in your browser to set up n8n"
 else
-    error "Some services are not running properly. Please check the logs."
+    warn "SSL certificate installation failed. n8n is accessible via HTTP:"
+    log "🌐 n8n is running at: http://$DOMAIN"
+    warn "You can manually add SSL later with: certbot --nginx -d $DOMAIN"
 fi
 
+# Final status
+log "📊 Services status:"
+echo "   - n8n: $(systemctl is-active n8n)"
+echo "   - nginx: $(systemctl is-active nginx)"
+
+log "🚀 You can now open https://$DOMAIN (or http://$DOMAIN) to set up n8n"
 log "Installation completed! 🎉"
