@@ -19,7 +19,7 @@ curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/c
 
 ### Продакшн установка (с SSL) - скрипт запросит домен и email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
+sudo -E DOMAIN="yourdomain.com" EMAIL="your@email.com" bash -c 'curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | bash'
 ```
 
 ### Установка для разработки (только HTTP)
@@ -98,7 +98,7 @@ dig +short yourdomain.com
 
 ### Продакшн установка (с SSL) - скрипт запросит домен и email
 ```bash
-curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | sudo bash
+sudo -E DOMAIN="yourdomain.com" EMAIL="your@email.com" bash -c 'curl -fsSL https://raw.githubusercontent.com/rootcraft-tech/n8n-installer/main/install-n8n.sh | bash'
 ```
 
 ### Установка для разработки (только HTTP)
